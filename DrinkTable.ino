@@ -230,12 +230,12 @@ void motorSetSpeed(int pwmPin, int pin1, int pin2, double speed) {
   int value = round(abs(255 * speed));
   if (speed >= 0) {
     analogWrite(pwmPin, value);
-    digitalWrite(pin1, LOW);
-    digitalWrite(pin2, HIGH);
-  } else {
-    analogWrite(pwmPin, value);
     digitalWrite(pin1, HIGH);
     digitalWrite(pin2, LOW);
+  } else {
+    analogWrite(pwmPin, value);
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, HIGH);
   }
 }
 
