@@ -36,7 +36,6 @@ boolean errorState = false;
 int errorBlinkCode = 0;
 
 boolean recentPour = false;
-unsigned long lastPourTime = 0;
 
 double shotPumpTime = 6.0;
 double mixerPumpTime = 8.5;
@@ -95,7 +94,7 @@ void setup() {
 */
 void loop() {
   // Check that resets recentPour
-  if (recentPour && (millis() - lastPourTime > 3000 || millis() - lastPourTime < 0) && !isGlassPresent()) {
+  if (recentPour && !isGlassPresent()) {
     recentPour = false;
   }
 
@@ -170,7 +169,6 @@ void onDrinkSelectionChange()  {
 
   setColor(Black);
   recentPour = true;
-  lastPourTime = millis();
 }
 
 /**
@@ -205,8 +203,6 @@ void servoSetPosition(double percent) {
 */
 boolean elevatorMove(boolean up) {
   unsigned long startTime = millis();
-  Serial.println(startTime);
-  Serial.println(millis() - startTime);
   if (up) { // Move Up
     while (!digitalRead(topLimit) && (millis() - startTime) < 3000 && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 1.0);
@@ -244,7 +240,7 @@ void motorSetSpeed(int pwmPin, int pin1, int pin2, double speed) {
 }
 
 /**
-   Returns false if pump fails (glass is not present at the begining or end of pumping)
+   Returns false if glass is not present during pump or time wrap around occurs
 */
 boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double pump4Time) {
   if (!isGlassPresent()) {
@@ -255,7 +251,7 @@ boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double 
   double elapsedTime = 0.0;
   double startTime = millis() / 1000.0;
 
-  while (maxPumpTime > elapsedTime) {
+  while (maxPumpTime > elapsedTime && isGlassPresent() && elapsedTime >= 0.0) {
     elapsedTime = (millis() / 1000.0) - startTime;
     if (elapsedTime < pump1Time) {
       digitalWrite(pump1, HIGH);
@@ -281,8 +277,13 @@ boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double 
       digitalWrite(pump4, LOW);
     }
   }
+  
+  digitalWrite(pump1, LOW);
+  digitalWrite(pump2, LOW);
+  digitalWrite(pump3, LOW);
+  digitalWrite(pump4, LOW);
 
-  return isGlassPresent();
+  return (isGlassPresent() && elapsedTime >= 0.0);
 }
 
 /**
