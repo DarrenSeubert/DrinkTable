@@ -116,14 +116,14 @@ void onDrinkSelectionChange()  {
   if (recentPour) {
     Serial.println("Error: Table has Detected a Recent Pour, Replace the Glass with a New One");
     drinkSelection.setBrightness(0);
-    errorBlink(2, false);
+    errorBlink(4, false);
     return;
   }
 
   if (!isGlassPresent()) { // Glass is not Present
     Serial.println("Error: Glass is not Present");
     drinkSelection.setBrightness(0);
-    errorBlink(3, false);
+    errorBlink(2, false);
     return;
   }
 
@@ -132,7 +132,7 @@ void onDrinkSelectionChange()  {
   double pump1Time, pump2Time, pump3Time, pump4Time = 0.0;
   if (!getPumpTimes(drinkCode, pump1Time, pump2Time, pump3Time, pump4Time)) { // Detects a Non-Valid Drink is Selected
     Serial.println("Error: Invalid Drink Selection");
-    errorBlink(2, true);
+    errorBlink(3, false);
     return;
   }
 
@@ -145,7 +145,7 @@ void onDrinkSelectionChange()  {
   // Drink Routine Starts Here:
   if (!elevatorMove(false)) { // Move Down until Bottom Limit
     Serial.println("Error: Elevator Movement Timed Out");
-    errorBlink(3, true);
+    errorBlink(2, false); // TODO Change to True
     return;
   }
 
@@ -154,7 +154,7 @@ void onDrinkSelectionChange()  {
 
   if (!pumpLiquid(pump1Time, pump2Time, pump3Time, pump4Time)) { // Pump Liquid
     Serial.println("Error: Pump Liquid Failed");
-    errorBlink(4, true);
+    errorBlink(3, true);
     return;
   }
 
@@ -164,7 +164,7 @@ void onDrinkSelectionChange()  {
 
   if (!elevatorMove(true)) { // Move Up until Top Limit
     Serial.println("Error: Elevator Movement Timed Out");
-    errorBlink(3, true);
+    errorBlink(2, false); // TODO Change to True
     return;
   }
 
@@ -201,21 +201,24 @@ void servoSetPosition(double percent) {
 
 /**
    Returns True if timeout or wrap around did not occur
+   TODO Tune Timeouts
 */
 boolean elevatorMove(boolean up) {
   unsigned long startTime = millis();
+  Serial.println(startTime);
+  Serial.println(millis() - startTime);
   if (up) { // Move Up
-    while (!digitalRead(topLimit) && (millis() - startTime) < 3000 && (millis() - startTime) > 0) {
+    while (!digitalRead(topLimit) && (millis() - startTime) < 3000 && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 1.0);
     }
   } else { // Move Down
-    while (!digitalRead(bottomLimit) && (millis() - startTime) < 3000 && (millis() - startTime) > 0) {
+    while (!digitalRead(bottomLimit) && (millis() - startTime) < 3000 && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, -1.0);
     }
   }
   motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 0.0);
 
-  return ((millis() - startTime) < 3000 && (millis() - startTime) > 0);
+  return ((millis() - startTime) < 3000 && (millis() - startTime) >= 0);
 }
 
 /**
@@ -288,10 +291,12 @@ boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double 
 void errorBlink(int times, boolean state) {
   errorBlinkCode = times;
   errorState = state;
-  RGBColor color = White;
+  RGBColor color;
 
-  if (errorState) {
+  if (state) {
     color = Red;
+  } else {
+    color = White;
   }
 
   for (int i = 0; i < times; i++) {
@@ -335,6 +340,11 @@ void setColor(RGBColor color) {
     case Purple:
       digitalWrite(red, HIGH);
       digitalWrite(green, LOW);
+      digitalWrite(blue, HIGH);
+      break;
+    case White:
+      digitalWrite(red, HIGH);
+      digitalWrite(green, HIGH);
       digitalWrite(blue, HIGH);
       break;
     case Black:
