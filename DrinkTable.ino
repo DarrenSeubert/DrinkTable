@@ -20,9 +20,9 @@ SparkFun_APDS9960 prox = SparkFun_APDS9960();
 int proxPower = 19;
 int proxGround = 18;
 
-int topLimit = 34;
-int topLimitPower = 23;
-int bottomLimit = 35;
+int topLimit = 27;
+int topLimitPower = 15;
+int bottomLimit = 23;
 int bottomLimitPower = 5;
 
 int elevatorMotorPWM = 16;
@@ -55,9 +55,9 @@ void setup() {
   pinMode(proxPower, OUTPUT);
   pinMode(proxGround, OUTPUT);
 
-  pinMode(topLimit, INPUT);
+  pinMode(topLimit, INPUT_PULLDOWN);
   pinMode(topLimitPower, OUTPUT);
-  pinMode(bottomLimit, INPUT);
+  pinMode(bottomLimit, INPUT_PULLDOWN);
   pinMode(bottomLimitPower, OUTPUT);
 
   pinMode(elevatorMotorPWM, OUTPUT);
