@@ -144,7 +144,7 @@ void onDrinkSelectionChange()  {
   // Drink Routine Starts Here:
   if (!elevatorMove(false)) { // Move Down until Bottom Limit
     Serial.println("Error: Elevator Movement Timed Out");
-    errorBlink(2, false); // TODO Change to True
+    errorBlink(2, true);
     return;
   }
 
@@ -163,7 +163,7 @@ void onDrinkSelectionChange()  {
 
   if (!elevatorMove(true)) { // Move Up until Top Limit
     Serial.println("Error: Elevator Movement Timed Out");
-    errorBlink(2, false); // TODO Change to True
+    errorBlink(2, true);
     return;
   }
 
@@ -203,11 +203,11 @@ void servoSetPosition(double percent) {
 boolean elevatorMove(boolean up) {
   unsigned long startTime = millis();
   if (up) { // Move Up
-    while (!digitalRead(topLimit) && (millis() - startTime) < 3000 && (millis() - startTime) >= 0) {
+    while (!digitalRead(topLimit) && (millis() - startTime) < 4000 && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 1.0);
     }
   } else { // Move Down
-    while (!digitalRead(bottomLimit) && (millis() - startTime) < 3000 && (millis() - startTime) >= 0) {
+    while (!digitalRead(bottomLimit) && (millis() - startTime) < 4000 && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, -1.0);
     }
   }
@@ -278,7 +278,7 @@ boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double 
 
     recentPour = true;
   }
-  
+
   digitalWrite(pump1, LOW);
   digitalWrite(pump2, LOW);
   digitalWrite(pump3, LOW);
