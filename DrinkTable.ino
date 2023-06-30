@@ -168,7 +168,6 @@ void onDrinkSelectionChange()  {
   }
 
   setColor(Black);
-  recentPour = true;
 }
 
 /**
@@ -276,6 +275,8 @@ boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double 
     } else {
       digitalWrite(pump4, LOW);
     }
+
+    recentPour = true;
   }
   
   digitalWrite(pump1, LOW);
