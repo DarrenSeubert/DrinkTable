@@ -85,7 +85,7 @@ void setup() {
   delay(500); // Delay for proximity sensor to power on
 
   prox.init(); // Initialize APDS-9960 (configure I2C and initial values)
-  prox.setProximityGain(1); // Adjust the Proximity sensor gain. 0: 1x, 1: 2x, 2: 4x, 3: 8x
+  prox.setProximityGain(2); // Adjust the Proximity sensor gain. 0: 1x, 1: 2x, 2: 4x, 3: 8x
   prox.enableProximitySensor(false); // Start running the prox-9960 proximity sensor (no interrupts)
 }
 
@@ -96,6 +96,13 @@ void loop() {
   // Check that resets recentPour
   if (recentPour && !isGlassPresent()) {
     recentPour = false;
+  }
+  
+  uint8_t proxData;
+  if (!prox.readProximity(proxData)) {
+    Serial.println("Error: Could not Read Proximity Value");
+  } else {
+    Serial.println(proxData);
   }
 
   ArduinoCloud.update();
