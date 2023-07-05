@@ -97,7 +97,7 @@ void loop() {
   if (recentPour && !isGlassPresent()) {
     recentPour = false;
   }
-  
+
   uint8_t proxData;
   if (!prox.readProximity(proxData)) {
     Serial.println("Error: Could not Read Proximity Value");
@@ -114,7 +114,7 @@ void loop() {
 void onDrinkSelectionChange()  {
   int tableCode = drinkSelection.getBrightness();
   drinkSelection.setBrightness(0);
-  
+
   if (tableCode == 99) { // Clears Error State of Table
     errorState = false;
     errorBlinkCode = 0;
@@ -122,30 +122,30 @@ void onDrinkSelectionChange()  {
     errorBlink(1, false);
     return;
   }
-  
+
   if (errorState) { // Checks if Table is in Error State
     Serial.println("Error: Table in Error State, Please Correct and Clear the Error");
     errorBlink(errorBlinkCode, true);
     return;
   }
-  
-  if(tableCode == 97) { // Homes Table to Top Limit
+
+  if (tableCode == 97) { // Homes Table to Top Limit
     Serial.println("Homing to Top Limit...");
     if (!elevatorMove(true)) { // Move Up until Top Limit
       Serial.println("Error: Elevator Movement Timed Out");
       errorBlink(2, true);
     }
-    
+
     return;
   }
-  
-  if(tableCode == 98) { // Homes Table to Bottom Limit
+
+  if (tableCode == 98) { // Homes Table to Bottom Limit
     Serial.println("Homing to Bottom Limit...");
     if (!elevatorMove(false)) { // Move Up until Top Limit
       Serial.println("Error: Elevator Movement Timed Out");
       errorBlink(2, true);
     }
-    
+
     return;
   }
 
@@ -190,7 +190,7 @@ void onDrinkSelectionChange()  {
     return;
   }
   delay(1000);
-  
+
   servoSetPosition(0.0); // Move Servo to Stored Position
   delay(2000);
 
