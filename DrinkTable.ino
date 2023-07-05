@@ -112,31 +112,57 @@ void loop() {
 
 */
 void onDrinkSelectionChange()  {
-  if (errorState) {
-    Serial.println("Error: Table in Error State, Please Correct Error and Power Cycle Table");
-    drinkSelection.setBrightness(0);
+  int tableCode = drinkSelection.getBrightness();
+  drinkSelection.setBrightness(0);
+  
+  if (tableCode == 99) { // Clears Error State of Table
+    errorState = false;
+    errorBlinkCode = 0;
+    Serial.println("Error State Cleared");
+    errorBlink(1, false);
+    return;
+  }
+  
+  if (errorState) { // Checks if Table is in Error State
+    Serial.println("Error: Table in Error State, Please Correct and Clear the Error");
     errorBlink(errorBlinkCode, true);
     return;
   }
+  
+  if(tableCode == 97) { // Homes Table to Top Limit
+    Serial.println("Homing to Top Limit...");
+    if (!elevatorMove(true)) { // Move Up until Top Limit
+      Serial.println("Error: Elevator Movement Timed Out");
+      errorBlink(2, true);
+    }
+    
+    return;
+  }
+  
+  if(tableCode == 98) { // Homes Table to Bottom Limit
+    Serial.println("Homing to Bottom Limit...");
+    if (!elevatorMove(false)) { // Move Up until Top Limit
+      Serial.println("Error: Elevator Movement Timed Out");
+      errorBlink(2, true);
+    }
+    
+    return;
+  }
 
-  if (recentPour) {
+  if (recentPour) { // Checks if the Glass has been Replaced
     Serial.println("Error: Table has Detected a Recent Pour, Replace the Glass with a New One");
-    drinkSelection.setBrightness(0);
     errorBlink(4, false);
     return;
   }
 
-  if (!isGlassPresent()) { // Glass is not Present
+  if (!isGlassPresent()) { // Checks if a Glass is Present
     Serial.println("Error: Glass is not Present");
-    drinkSelection.setBrightness(0);
     errorBlink(2, false);
     return;
   }
 
-  int drinkCode = drinkSelection.getBrightness();
-  drinkSelection.setBrightness(0);
   double pump1Time, pump2Time, pump3Time, pump4Time = 0.0;
-  if (!getPumpTimes(drinkCode, pump1Time, pump2Time, pump3Time, pump4Time)) { // Detects a Non-Valid Drink is Selected
+  if (!getPumpTimes(tableCode, pump1Time, pump2Time, pump3Time, pump4Time)) { // Detects a Non-Valid Drink is Selected
     Serial.println("Error: Invalid Drink Selection");
     errorBlink(3, false);
     return;
@@ -149,13 +175,13 @@ void onDrinkSelectionChange()  {
   Serial.println("-------");
 
   // Drink Routine Starts Here:
-  if (!elevatorMove(false)) { // Move Down until Bottom Limit
+  if (!elevatorMove(false)) { // Move Elevator Down until Bottom Limit
     Serial.println("Error: Elevator Movement Timed Out");
     errorBlink(2, true);
     return;
   }
 
-  servoSetPosition(1.0);
+  servoSetPosition(1.0); // Move Servo to Pouring Position
   delay(2000);
 
   if (!pumpLiquid(pump1Time, pump2Time, pump3Time, pump4Time)) { // Pump Liquid
@@ -163,12 +189,12 @@ void onDrinkSelectionChange()  {
     errorBlink(3, true);
     return;
   }
-
   delay(1000);
-  servoSetPosition(1.0);
+  
+  servoSetPosition(0.0); // Move Servo to Stored Position
   delay(2000);
 
-  if (!elevatorMove(true)) { // Move Up until Top Limit
+  if (!elevatorMove(true)) { // Move Elevator Up until Top Limit
     Serial.println("Error: Elevator Movement Timed Out");
     errorBlink(2, true);
     return;
