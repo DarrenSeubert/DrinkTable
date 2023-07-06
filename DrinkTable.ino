@@ -212,7 +212,7 @@ boolean isGlassPresent() {
     Serial.println("Error: Could not Read Proximity Value");
     return false;
   } else {
-    return proxData > 240;
+    return proxData > 200;
   }
 }
 
