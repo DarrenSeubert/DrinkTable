@@ -32,6 +32,8 @@ int elevatorMotorPin2 = 2;
 Servo servo;
 int servoPin = 17;
 
+boolean firstRun;
+
 boolean errorState = false;
 int errorBlinkCode = 0;
 
@@ -95,7 +97,8 @@ void setup() {
 void loop() {
   if (!ArduinoCloud.connected()) {
     Serial.println("Connecting to Arduino IoT Cloud...");
-    connectionBlink();
+    firstRun = true;
+    connectionBlink(false);
   }
 
   // Check that resets recentPour
@@ -117,6 +120,12 @@ void loop() {
 
 */
 void onDrinkSelectionChange()  {
+  if (firstRun) {
+    firstRun = false;
+    connectionBlink(true);
+    return;
+  }
+  
   int tableCode = drinkSelection.getBrightness();
   drinkSelection.setBrightness(0);
   Serial.println("-------");
@@ -355,11 +364,22 @@ void errorBlink(int times, boolean state) {
 /**
 
 */
-void connectionBlink() {
-  setColor(Blue);
-  delay(1000);
+void connectionBlink(boolean connected) {
+  RGBColor color;
+  int delayTime;
+  
+  if (connected) {
+    color = Green;
+    delayTime = 250;
+  } else {
+    color = Blue;
+    delayTime = 1000;
+  }
+  
+  setColor(color);
+  delay(delayTime);
   setColor(Black);
-  delay(1000);
+  delay(delayTime);
 }
 
 /**
