@@ -115,6 +115,7 @@ void onDrinkSelectionChange()  {
   int tableCode = drinkSelection.getBrightness();
   drinkSelection.setBrightness(0);
   Serial.println("-------");
+  Serial.print("Table Code: ");
   Serial.println(tableCode);
 
   if (tableCode == 99) { // Clears Error State of Table
