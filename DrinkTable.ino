@@ -98,12 +98,12 @@ void loop() {
     recentPour = false;
   }
 
-  uint8_t proxData;
+  /*uint8_t proxData;
   if (!prox.readProximity(proxData)) {
     Serial.println("Error: Could not Read Proximity Value");
   } else {
     Serial.println(proxData);
-  }
+  }*/
 
   ArduinoCloud.update();
 }
@@ -114,6 +114,8 @@ void loop() {
 void onDrinkSelectionChange()  {
   int tableCode = drinkSelection.getBrightness();
   drinkSelection.setBrightness(0);
+  Serial.println("-------");
+  Serial.println(tableCode);
 
   if (tableCode == 99) { // Clears Error State of Table
     errorState = false;
@@ -168,11 +170,11 @@ void onDrinkSelectionChange()  {
     return;
   }
 
+  Serial.println("-Pump Times-");
   Serial.println(pump1Time);
   Serial.println(pump2Time);
   Serial.println(pump3Time);
   Serial.println(pump4Time);
-  Serial.println("-------");
 
   // Drink Routine Starts Here:
   if (!elevatorMove(false)) { // Move Elevator Down until Bottom Limit
@@ -201,6 +203,7 @@ void onDrinkSelectionChange()  {
   }
 
   setColor(Black);
+  Serial.println("-------");
 }
 
 /**
@@ -212,6 +215,8 @@ boolean isGlassPresent() {
     Serial.println("Error: Could not Read Proximity Value");
     return false;
   } else {
+    Serial.print("Proximity Value: ");
+    Serial.println(proxData);
     return proxData > 200;
   }
 }
