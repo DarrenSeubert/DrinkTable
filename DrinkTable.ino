@@ -93,11 +93,16 @@ void setup() {
 
 */
 void loop() {
+  if (!ArduinoCloud.connected()) {
+    Serial.println("Connecting to Arduino IoT Cloud...");
+    connectionBlink();
+  }
+
   // Check that resets recentPour
   if (recentPour && !isGlassPresent()) {
     recentPour = false;
   }
-
+  
   /*uint8_t proxData;
   if (!prox.readProximity(proxData)) {
     Serial.println("Error: Could not Read Proximity Value");
@@ -204,7 +209,6 @@ void onDrinkSelectionChange()  {
   }
 
   setColor(Black);
-  Serial.println("-------");
 }
 
 /**
@@ -346,6 +350,16 @@ void errorBlink(int times, boolean state) {
     setColor(Black);
     delay(250);
   }
+}
+
+/**
+
+*/
+void connectionBlink() {
+  setColor(Blue);
+  delay(1000);
+  setColor(Black);
+  delay(1000);
 }
 
 /**
