@@ -105,13 +105,6 @@ void loop() {
   if (recentPour && !isGlassPresent()) {
     recentPour = false;
   }
-  
-  /*uint8_t proxData;
-  if (!prox.readProximity(proxData)) {
-    Serial.println("Error: Could not Read Proximity Value");
-  } else {
-    Serial.println(proxData);
-  }*/
 
   ArduinoCloud.update();
 }
