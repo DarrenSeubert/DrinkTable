@@ -1,58 +1,55 @@
-:Author: Darren Seubert
-:Email:
-:Date: 20/06/2023
-:Revision: version#
-:License: Public Domain
+= Drink Table
 
-= Project: {Project}
-
-Describe your project
+An Amazon Alexa Enabled IoT Device that Mixes and Pours Drinks. +
+ +
+Alexa treats this table as a Dimmable light. A given brightness percentage represents a drink or command for the table the execute.
 
 == Step 1: Installation
-Please describe the steps to install this project.
 
-For example:
-
-1. Open this file
-2. Edit as you like
-3. Release to the World!
+1. Download this repo
+2. Create an Arduino IoT Cloud Thing
+3. Create a Cloud Variable named drinkSelection and configure it as a Dimmed light, Read & Write, and On change
+4. Setup the associated device as a ESP32 and give it the username and password to your WiFi.
+5. Copy the contents of DrinkTable.ino into your main arduino file (Note: Remove Line 1 for file).
+6. Install the correct libraries and fix any duplicate named variable errors
 
 == Step 2: Assemble the circuit
 
-Assemble the circuit following the diagram layout.png attached to the sketch
+Assemble the circuit following the diagram ESP32Wiring.pdf
 
 == Step 3: Load the code
 
-Upload the code contained in this sketch on to your board
+1. Upload the code contained in this sketch on to a ESP32Board.
+2. In the Alexa app, add the Arduino IoT skill and link your account
+3. Have Alexa search for new devices and add the table controller
+4. Set up routines for what phrases mean what drink should be made or action
 
-=== Folder structure
+=== Folder Structure
 
 ....
- sketch123                => Arduino sketch folder
-  ├── sketch123.ino       => main Arduino file
-  ├── schematics.png      => (optional) an image of the required schematics
-  ├── layout.png          => (optional) an image of the layout
-  └── ReadMe.adoc         => this file
+ DrinkTable                       => Arduino sketch folder
+  ├── DrinkTable.ino              => main Arduino file
+  ├── ESP32Wiring.png             => a pdf with how to wiring the ESP32 board
+  ├── HowToUseAndBlinkCodes.png   => a pdf on how to use the table and blink codes
+  ├── ReadMe.adoc                 => this file
+  ├── sketch.json                 => stores sketch metadata
+  └── thingProperties.h           => header file for this thing
+  
 ....
-
-=== License
-This project is released under a {License} License.
-
-=== Contributing
-To contribute to this project please contact: 
 
 === BOM
-Add the bill of the materials you need for this project.
 
-|===
-| ID | Part name      | Part number | Quantity
-| R1 | 10k Resistor   | 1234-abcd   | 10       
-| L1 | Red LED        | 2345-asdf   | 5        
-| A1 | Arduino Zero   | ABX00066    | 1        
-|===
+Follow this https://docs.google.com/spreadsheets/d/1IcMglOSQPUuBVhDI59dvtKw1fak_Vcd6wv3FlI9-fAY/edit?usp=sharing[link] to check out a rough BOM for this project. +
+Here is a https://google.com[link] to all of the parts 3D printed for this project.
 
+=== Resources
 
-=== Help
-This document is written in the _AsciiDoc_ format, a markup language to describe documents. 
-If you need help you can search the http://www.methods.co.nz/asciidoc[AsciiDoc homepage]
-or consult the http://powerman.name/doc/asciidoc[AsciiDoc cheatsheet]
+Here are some resources I found useful while working on this project: +
+https://lastminuteengineers.com/esp32-pinout-reference/ +
+https://randomnerdtutorials.com/esp32-i2c-communication-arduino-ide/#:~:text=When%20using%20the%20ESP32%20with,to%20use%20any%20other%20pins +
+https://learn.sparkfun.com/tutorials/apds-9960-rgb-and-gesture-sensor-hookup-guide?_ga=2.65717033.608928880.1687222379-684264470.1685647909#hardware-hookup +
+https://docs.arduino.cc/arduino-cloud/getting-started/cloud-variables +
+https://blog.arduino.cc/2019/11/12/create-a-voice-controlled-device-with-alexa-and-arduino-iot-cloud-in-7-minutes/ +
+ +
+https://www.youtube.com/watch?v=F9UASFoUwiQ +
+https://www.youtube.com/watch?v=nR24z26chBI +
