@@ -27,13 +27,13 @@ Assemble the circuit following the diagram ESP32Wiring.pdf
 === Folder Structure
 
 ....
- DrinkTable                       => Arduino sketch folder
-  ├── DrinkTable.ino              => main Arduino file
-  ├── ESP32Wiring.png             => a pdf with how to wiring the ESP32 board
-  ├── HowToUseAndBlinkCodes.png   => a pdf on how to use the table and blink codes
-  ├── ReadMe.adoc                 => this file
-  ├── sketch.json                 => stores sketch metadata
-  └── thingProperties.h           => header file for this thing
+ DrinkTable                => Arduino sketch folder
+  ├── DrinkTable.ino       => main Arduino file
+  ├── ESP32Wiring.pdf      => a pdf with how to wiring the ESP32 board
+  ├── Guide.pdf            => a pdf on how to use the table and blink codes
+  ├── ReadMe.adoc          => this file
+  ├── sketch.json          => stores sketch metadata
+  └── thingProperties.h    => header file for this thing
   
 ....
 
