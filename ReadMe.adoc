@@ -10,7 +10,7 @@ Alexa treats this table as a Dimmable light. A given brightness percentage repre
 2. Create an Arduino IoT Cloud Thing
 3. Create a Cloud Variable named drinkSelection and configure it as a Dimmed light, Read & Write, and On change
 4. Setup the associated device as a ESP32 and give it the username and password to your WiFi.
-5. Copy the contents of DrinkTable.ino into your main arduino file (Note: Remove Line 1 for file).
+5. Copy the contents of DrinkTable.ino into your main Arduino file.
 6. Install the correct libraries and fix any duplicate named variable errors
 
 == Step 2: Assemble the circuit
