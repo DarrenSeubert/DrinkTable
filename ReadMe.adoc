@@ -24,7 +24,7 @@ Assemble the circuit following the diagram ESP32Wiring.pdf
 3. Have Alexa search for new devices and add the table controller
 4. Set up routines for what phrases mean what drink should be made or action
 
-=== Folder structure
+=== Folder Structure
 
 ....
  DrinkTable                       => Arduino sketch folder
