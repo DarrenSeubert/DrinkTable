@@ -39,7 +39,7 @@ Assemble the circuit following the diagram ESP32Wiring.pdf
 
 === BOM
 
-Follow this https://docs.google.com/spreadsheets/d/1IcMglOSQPUuBVhDI59dvtKw1fak_Vcd6wv3FlI9-fAY/edit?usp=sharing[link] to check out the BOM for this project. +
+Follow this https://docs.google.com/spreadsheets/d/1IcMglOSQPUuBVhDI59dvtKw1fak_Vcd6wv3FlI9-fAY/edit?usp=sharing[link] to check out a rough BOM for this project. +
 Here is a https://google.com[link] to all of the parts 3D printed for this project.
 
 === Resources
