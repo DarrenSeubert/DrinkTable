@@ -91,7 +91,7 @@ void setup() {
   prox.enableProximitySensor(false); // Start running the prox-9960 proximity sensor (no interrupts)
 }
 
-/// @brief Function called repeatly during execution of program
+/// @brief Function called repeatedly during execution of program
 void loop() {
   // Check if connected to Arduino IoT Cloud
   if (!ArduinoCloud.connected()) {
@@ -297,7 +297,7 @@ void motorSetSpeed(int pwmPin, int pin1, int pin2, double percentage) {
 /// @param pump2Time The desired pump time in seconds
 /// @param pump3Time The desired pump time in seconds
 /// @param pump4Time The desired pump time in seconds
-/// @return True if the glass stays present for the duraction of the fucntion and time wrap did not occur, else false
+/// @return True if the glass stays present for the duration of the function and time wrap did not occur, else false
 boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double pump4Time) {
   double maxPumpTime = max(max(pump1Time, pump2Time), max(pump3Time, pump4Time));
   double elapsedTime = 0.0;
