@@ -19,7 +19,7 @@ Assemble the circuit following the diagram ESP32Wiring.pdf
 
 == Step 3: Load the code
 
-1. Upload the code contained in this sketch on to a ESP32Board.
+1. Upload the code contained in this sketch onto a ESP32Board.
 2. In the Alexa app, add the Arduino IoT skill and link your account
 3. Have Alexa search for new devices and add the table controller
 4. Set up routines for what phrases mean what drink should be made or action
@@ -53,3 +53,5 @@ https://blog.arduino.cc/2019/11/12/create-a-voice-controlled-device-with-alexa-a
  +
 https://www.youtube.com/watch?v=F9UASFoUwiQ +
 https://www.youtube.com/watch?v=nR24z26chBI +
+ +
+https://aluminancestore.myshopify.com/blogs/news/robotic-beverage-server-bom +
