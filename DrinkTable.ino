@@ -281,14 +281,18 @@ void motorSetSpeed(int pwmPin, int pin1, int pin2, double percentage) {
   }
 
   int value = round(abs(255 * percentage));
-  if (percentage >= 0) {
+  if (percentage > 0.0) {
     analogWrite(pwmPin, value);
     digitalWrite(pin1, HIGH);
     digitalWrite(pin2, LOW);
-  } else {
+  } else if (percentage < 0.0) {
     analogWrite(pwmPin, value);
     digitalWrite(pin1, LOW);
     digitalWrite(pin2, HIGH);
+  } else {
+    analogWrite(pwmPin, value);
+    digitalWrite(pin1, LOW);
+    digitalWrite(pin2, LOW);
   }
 }
 
