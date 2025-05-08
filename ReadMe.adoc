@@ -33,6 +33,7 @@ Assemble the circuit following the diagram in `ESP32Wiring.pdf`.
 
 ....  
 DrinkTable                => Arduino sketch folder  
+├── CADFiles             => Folder with all 3D printed parts  
 ├── DrinkTable.ino       => Main Arduino file  
 ├── ESP32Wiring.pdf      => Circuit wiring diagram for the ESP32 board  
 ├── Guide.pdf            => Usage guide and blink code reference  
@@ -43,11 +44,9 @@ DrinkTable                => Arduino sketch folder
 
 === Bill of Materials (BOM)  
 
-Check the following link for a rough BOM for this project:  
-https://docs.google.com/spreadsheets/d/1IcMglOSQPUuBVhDI59dvtKw1fak_Vcd6wv3FlI9-fAY/edit?usp=sharing[View BOM]  
+For a rough BOM for this project, refer to this https://docs.google.com/spreadsheets/d/1IcMglOSQPUuBVhDI59dvtKw1fak_Vcd6wv3FlI9-fAY/edit?usp=sharing[BOM link].  
 
-For all of the CAD files for the 3D-printed parts used in this project, refer to this link:  
-https://google.com[3D Printed Parts]  
+For the CAD files and 3D-printed parts used in this project, refer to the https://github.com/DarrenSeubert/DrinkTable/tree/main/CADFiles[CADFiles] folder.  
 
 === External Resources  
 
@@ -63,7 +62,3 @@ Videos:
 
 - https://www.youtube.com/watch?v=F9UASFoUwiQ[Can Alexa/Siri Be Your Bartender?]
 - https://www.youtube.com/watch?v=nR24z26chBI[I Need To Stop Making Smart Furniture]  
-
-Other Resources:
-
-- https://aluminancestore.myshopify.com/blogs/news/robotic-beverage-server-bom[Robotic Beverage Server BOM]  
