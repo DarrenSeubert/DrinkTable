@@ -9,29 +9,29 @@ enum RGBColor {
   Red, Green, Blue, Yellow, Cyan, Purple, White, Black
 };
 
-int red = 13;
-int green = 12;
-int blue = 14;
-int pump1 = 26; // Apple Brandy
-int pump2 = 25; // Cran-Grape Juice
-int pump3 = 33; // UV Blue
-int pump4 = 32; // Lemonade
+const int red = 13;
+const int green = 12;
+const int blue = 14;
+const int pump1 = 26; // Apple Brandy
+const int pump2 = 25; // Cran-Grape Juice
+const int pump3 = 33; // UV Blue
+const int pump4 = 32; // Lemonade
 
 SparkFun_APDS9960 prox = SparkFun_APDS9960();
-int proxPower = 19;
-int proxGround = 18;
+const int proxPower = 19;
+const int proxGround = 18;
 
-int topLimit = 27;
-int topLimitPower = 15;
-int bottomLimit = 23;
-int bottomLimitPower = 5;
+const int topLimit = 27;
+const int topLimitPower = 15;
+const int bottomLimit = 23;
+const int bottomLimitPower = 5;
 
-int elevatorMotorPWM = 16;
-int elevatorMotorPin1 = 4;
-int elevatorMotorPin2 = 2;
+const int elevatorMotorPWM = 16;
+const int elevatorMotorPin1 = 4;
+const int elevatorMotorPin2 = 2;
 
 Servo servo;
-int servoPin = 17;
+const int servoPin = 17;
 
 boolean firstRun;
 
@@ -65,9 +65,6 @@ void setup() {
   pinMode(elevatorMotorPin1, OUTPUT);
   pinMode(elevatorMotorPin2, OUTPUT);
 
-  servo.attach(servoPin);
-  servoSetPosition(0.0); // TODO Tune Rotation Percentage
-
   Serial.begin(9600); // Initialize serial and wait for port to open:
   delay(1500); // This delay gives the chance to wait for a Serial Monitor without blocking if none is found
   initProperties(); // Defined in thingProperties.h
@@ -80,6 +77,12 @@ void setup() {
   setDebugMessageLevel(2);
   ArduinoCloud.printDebugInfo();
 
+  servo.attach(servoPin);
+  servoSetPosition(0.0); // TODO Tune Rotation Percentage
+  
+  digitalWrite(elevatorMotorPin1, HIGH);
+  digitalWrite(elevatorMotorPin2, HIGH); 
+  
   digitalWrite(topLimitPower, HIGH);
   digitalWrite(bottomLimitPower, HIGH);
   digitalWrite(proxPower, HIGH);
@@ -238,7 +241,7 @@ boolean isGlassPresent() {
 }
 
 /// @brief Function that sets the servo's position given a percent of rotation
-/// @param percent A value between 0.0 and 1.0 to be converted into the servo's target rotation position in degrees
+/// @param percent A value between 0.0 and 1.0 with 0.0 being stored position and 1.0 being pouring position
 void servoSetPosition(double percent) {
   if (percent < 0.0) {
     percent = 0.0;
@@ -246,7 +249,9 @@ void servoSetPosition(double percent) {
     percent = 1.0;
   }
 
-  servo.write(180 * percent);
+  // Map the values 0.0-1.0 to 5-105
+  int value = 100 * percent + 5;
+  servo.write(value);
 }
 
 /// @brief Function that moves the elevator until the correct limit switch is pressed with a timeout
@@ -254,21 +259,22 @@ void servoSetPosition(double percent) {
 /// @return True if the movement did not timeout or time wrap around did not occur, else false
 boolean elevatorMove(boolean up) {
   unsigned long startTime = millis();
+  int timeout = 4000; // TODO Tune Timeout
   if (up) { // Move Up
-    while (!digitalRead(topLimit) && (millis() - startTime) < 4000 && (millis() - startTime) >= 0) { // TODO Tune Timeouts
+    while (!digitalRead(topLimit) && (millis() - startTime) < timeout && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 1.0);
     }
   } else { // Move Down
-    while (!digitalRead(bottomLimit) && (millis() - startTime) < 4000 && (millis() - startTime) >= 0) { // TODO Tune Timeouts
+    while (!digitalRead(bottomLimit) && (millis() - startTime) < timeout && (millis() - startTime) >= 0) {
       motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, -1.0);
     }
   }
   motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 0.0);
 
-  return ((millis() - startTime) < 4000 && (millis() - startTime) >= 0); // TODO Tune Timeouts
+  return ((millis() - startTime) < timeout && (millis() - startTime) >= 0);
 }
 
-/// @brief Function that sets a motors speed and direction
+/// @brief Function that sets a motor's speed and direction
 /// @param pwmPin The PWM pin that the motor controller is plugged into
 /// @param pin1 One of the pins that the motor controller is plugged into
 /// @param pin2 One of the pins that the motor controller is plugged into
@@ -291,8 +297,8 @@ void motorSetSpeed(int pwmPin, int pin1, int pin2, double percentage) {
     digitalWrite(pin2, HIGH);
   } else {
     analogWrite(pwmPin, value);
-    digitalWrite(pin1, LOW);
-    digitalWrite(pin2, LOW);
+    digitalWrite(pin1, HIGH);
+    digitalWrite(pin2, HIGH);
   }
 }
 
