@@ -1,6 +1,6 @@
 #include "arduino_secrets.h"
 #include <SparkFun_APDS9960.h> // SparkFun APDS9960 RGB and Gesture Sensor - Version: Latest
-#include <Wire.h> // Enables IC2 Communication
+#include <Wire.h> // For IC2 Communication
 #include <ESP32Servo.h> // ESP32Servo - Version: Latest
 #include "thingProperties.h"
 
@@ -17,21 +17,24 @@ const int pump2 = 25; // Cran-Grape Juice
 const int pump3 = 33; // UV Blue
 const int pump4 = 32; // Lemonade
 
-SparkFun_APDS9960 prox = SparkFun_APDS9960();
-const int proxPower = 19;
-const int proxGround = 18;
+Servo servo;
+const int servoPin = 17;
+
+const int elevatorMotorPin1 = 4;
+const int elevatorMotorPin2 = 2;
+const int elevatorMotorPWM = 16;
+const int elevatorMotorChannel = 2;
+const int elevatorMotorFrequency = 5000;
+const int elevatorMotorResolution = 8;
 
 const int topLimit = 27;
 const int topLimitPower = 15;
 const int bottomLimit = 23;
 const int bottomLimitPower = 5;
 
-const int elevatorMotorPWM = 16;
-const int elevatorMotorPin1 = 4;
-const int elevatorMotorPin2 = 2;
-
-Servo servo;
-const int servoPin = 17;
+SparkFun_APDS9960 prox = SparkFun_APDS9960();
+const int proxPower = 19;
+const int proxGround = 18;
 
 boolean firstRun;
 
@@ -53,17 +56,16 @@ void setup() {
   pinMode(pump3, OUTPUT);
   pinMode(pump4, OUTPUT);
 
-  pinMode(proxPower, OUTPUT);
-  pinMode(proxGround, OUTPUT);
+  pinMode(elevatorMotorPin1, OUTPUT);
+  pinMode(elevatorMotorPin2, OUTPUT);
 
   pinMode(topLimit, INPUT_PULLDOWN);
   pinMode(topLimitPower, OUTPUT);
   pinMode(bottomLimit, INPUT_PULLDOWN);
   pinMode(bottomLimitPower, OUTPUT);
 
-  pinMode(elevatorMotorPWM, OUTPUT);
-  pinMode(elevatorMotorPin1, OUTPUT);
-  pinMode(elevatorMotorPin2, OUTPUT);
+  pinMode(proxPower, OUTPUT);
+  pinMode(proxGround, OUTPUT);
 
   Serial.begin(9600); // Initialize serial and wait for port to open:
   delay(1500); // This delay gives the chance to wait for a Serial Monitor without blocking if none is found
@@ -80,11 +82,15 @@ void setup() {
   servo.attach(servoPin);
   servoSetPosition(0.0); // TODO Tune Rotation Percentage
   
+  ledcSetup(elevatorMotorChannel, elevatorMotorFrequency, elevatorMotorResolution);
+  ledcAttachPin(elevatorMotorPWM, elevatorMotorChannel);
   digitalWrite(elevatorMotorPin1, HIGH);
-  digitalWrite(elevatorMotorPin2, HIGH); 
+  digitalWrite(elevatorMotorPin2, HIGH);
+  ledcWrite(elevatorMotorChannel, 0);
   
   digitalWrite(topLimitPower, HIGH);
   digitalWrite(bottomLimitPower, HIGH);
+  
   digitalWrite(proxPower, HIGH);
   digitalWrite(proxGround, LOW);
   delay(500); // Delay for proximity sensor to power on
@@ -262,24 +268,24 @@ boolean elevatorMove(boolean up) {
   int timeout = 4000; // TODO Tune Timeout
   if (up) { // Move Up
     while (!digitalRead(topLimit) && (millis() - startTime) < timeout && (millis() - startTime) >= 0) {
-      motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 1.0);
+      motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, 1.0);
     }
   } else { // Move Down
     while (!digitalRead(bottomLimit) && (millis() - startTime) < timeout && (millis() - startTime) >= 0) {
-      motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, -1.0);
+      motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, -1.0);
     }
   }
-  motorSetSpeed(elevatorMotorPWM, elevatorMotorPin1, elevatorMotorPin2, 0.0);
+  motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, 0.0);
 
   return ((millis() - startTime) < timeout && (millis() - startTime) >= 0);
 }
 
 /// @brief Function that sets a motor's speed and direction
-/// @param pwmPin The PWM pin that the motor controller is plugged into
+/// @param motorChannel The channel that the motor controller is running on
 /// @param pin1 One of the pins that the motor controller is plugged into
 /// @param pin2 One of the pins that the motor controller is plugged into
 /// @param percentage A value between -1.0 and 1.0 that represents the percentage and direction for the motor to run 
-void motorSetSpeed(int pwmPin, int pin1, int pin2, double percentage) {
+void motorSetSpeed(int motorChannel, int pin1, int pin2, double percentage) {
   if (percentage < -1.0) {
     percentage = -1.0;
   } else if (percentage > 1.0) {
@@ -288,17 +294,17 @@ void motorSetSpeed(int pwmPin, int pin1, int pin2, double percentage) {
 
   int value = round(abs(255 * percentage));
   if (percentage > 0.0) {
-    analogWrite(pwmPin, value);
     digitalWrite(pin1, HIGH);
     digitalWrite(pin2, LOW);
+    ledcWrite(motorChannel, value); 
   } else if (percentage < 0.0) {
-    analogWrite(pwmPin, value);
     digitalWrite(pin1, LOW);
     digitalWrite(pin2, HIGH);
+    ledcWrite(motorChannel, value);
   } else {
-    analogWrite(pwmPin, value);
     digitalWrite(pin1, HIGH);
     digitalWrite(pin2, HIGH);
+    ledcWrite(motorChannel, value);
   }
 }
 
