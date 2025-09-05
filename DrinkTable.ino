@@ -1,8 +1,9 @@
 #include "arduino_secrets.h"
+#include "thingProperties.h"
+
+#include <ESP32Servo.h> // ESP32Servo - Version: Latest
 #include <SparkFun_APDS9960.h> // SparkFun APDS9960 RGB and Gesture Sensor - Version: Latest
 #include <Wire.h> // For IC2 Communication
-#include <ESP32Servo.h> // ESP32Servo - Version: Latest
-#include "thingProperties.h"
 
 // Declarations
 enum RGBColor {
@@ -264,20 +265,20 @@ void servoSetPosition(double percent) {
 /// @param up Whether the desired movement of the elevator is up or down
 /// @return True if the movement did not timeout or time wrap around did not occur, else false
 boolean elevatorMove(boolean up) {
-  unsigned long startTime = millis();
+  unsigned long startTime = millis(); // TODO Guard against wrap around
   int timeout = 4000; // TODO Tune Timeout
   if (up) { // Move Up
-    while (!digitalRead(topLimit) && (millis() - startTime) < timeout && (millis() - startTime) >= 0) {
+    while (!digitalRead(topLimit) && (millis() - startTime) < timeout) {
       motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, 1.0);
     }
   } else { // Move Down
-    while (!digitalRead(bottomLimit) && (millis() - startTime) < timeout && (millis() - startTime) >= 0) {
+    while (!digitalRead(bottomLimit) && (millis() - startTime) < timeout) {
       motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, -1.0);
     }
   }
   motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, 0.0);
 
-  return ((millis() - startTime) < timeout && (millis() - startTime) >= 0);
+  return ((millis() - startTime) < timeout);
 }
 
 /// @brief Function that sets a motor's speed and direction
