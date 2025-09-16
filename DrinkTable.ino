@@ -44,7 +44,6 @@ int errorBlinkCode = 0;
 
 boolean recentPour = false;
 
-// TODO Tune pump times
 double shotPumpTime = 6.0;
 double mixerPumpTime = 8.5;
 
@@ -98,7 +97,7 @@ void setup() {
   delay(500); // Delay for proximity sensor to power on
 
   prox.init(); // Initialize APDS-9960 (configure I2C and initial values)
-  prox.setProximityGain(2); // Adjust the Proximity sensor gain. 0: 1x, 1: 2x, 2: 4x, 3: 8x
+  prox.setProximityGain(0); // Adjust the Proximity sensor gain. 0: 1x, 1: 2x, 2: 4x, 3: 8x
   prox.enableProximitySensor(false); // Start running the prox-9960 proximity sensor (no interrupts)
 }
 
@@ -244,7 +243,7 @@ boolean isGlassPresent() {
   } else {
     Serial.print("Proximity Value: ");
     Serial.println(proxData);
-    return proxData > 200;
+    return proxData > 230;
   }
 }
 
@@ -258,8 +257,8 @@ void servoSetPosition(double percent) {
     percent = 1.0;
   }
 
-  // Map the values 0.0-1.0 to 0-110
-  int value = percent * 110;
+  // Map the values 0.0-1.0 to 5-110
+  int value = 105 * percent + 5; 
   int prevValue = servo.read();
   servo.write(value);
 
