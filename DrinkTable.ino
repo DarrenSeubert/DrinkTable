@@ -81,7 +81,7 @@ void setup() {
   ArduinoCloud.printDebugInfo();
 
   servo.attach(servoPin);
-  servoSetPosition(0.0); // TODO Tune Rotation Percentage
+  servoSetPosition(0.0);
   
   ledcSetup(elevatorMotorChannel, elevatorMotorFrequency, elevatorMotorResolution);
   ledcAttachPin(elevatorMotorPWM, elevatorMotorChannel);
@@ -207,21 +207,21 @@ void onDrinkSelectionChange()  {
   }
 
   // Move Servo to Pouring Position
-  servoSetPosition(1.0); // TODO Tune Rotation Percentage
-  delay(2000);
+  servoSetPosition(1.0);
+  delay(500);
 
   // Pump Liquid
   if (!pumpLiquid(pump1Time, pump2Time, pump3Time, pump4Time)) {
     Serial.println("Error: Pump Liquid Failed");
-    servoSetPosition(0.0); // TODO Tune Rotation Percentage
+    servoSetPosition(0.0);
     errorBlink(3, true);
     return;
   }
   delay(1000);
   
   // Move Servo to Stored Position
-  servoSetPosition(0.0); // TODO Tune Rotation Percentage
-  delay(2000);
+  servoSetPosition(0.0);
+  delay(500);
 
   // Move Elevator Up until Top Limit
   if (!elevatorMove(true)) {
@@ -247,7 +247,8 @@ boolean isGlassPresent() {
   }
 }
 
-/// @brief Function that sets the servo's position given a percent of rotation
+/// @brief Function that sets the servo's position given a percent of rotation. To reduce noise from constant
+/// minor corrections, the target position is adjusted by ±5 units after a short delay.
 /// @param percent A value between 0.0 and 1.0 with 0.0 being stored position and 1.0 being pouring position
 void servoSetPosition(double percent) {
   if (percent < 0.0) {
@@ -256,9 +257,19 @@ void servoSetPosition(double percent) {
     percent = 1.0;
   }
 
-  // Map the values 0.0-1.0 to 5-105
-  int value = 100 * percent + 5;
+  // Map the values 0.0-1.0 to 0-110
+  int value = percent * 110;
+  int prevValue = servo.read();
   servo.write(value);
+
+  // Determine direction of travel
+  if (abs(value - prevValue) > 5) {
+    int adjustment = (value < prevValue) ? 5 : -5;
+    
+    // Let the servo move to the requested set position
+    delay(1000);
+    servo.write(value + adjustment);
+  }
 }
 
 /// @brief Function that moves the elevator until the correct limit switch is pressed with a timeout
