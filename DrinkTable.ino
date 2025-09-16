@@ -277,7 +277,7 @@ void servoSetPosition(double percent) {
 /// @return True if the movement did not timeout or time wrap around did not occur, else false
 boolean elevatorMove(boolean up) {
   unsigned long startTime = millis();
-  const unsigned long timeout = 4000; // TODO Tune Timeout
+  const unsigned long timeout = 8000;
   if (up) { // Move Up
     while (!digitalRead(topLimit) && (millis() - startTime) < timeout) {
       motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, 1.0);
