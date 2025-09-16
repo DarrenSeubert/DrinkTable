@@ -44,6 +44,7 @@ int errorBlinkCode = 0;
 
 boolean recentPour = false;
 
+// TODO Tune pump times
 double shotPumpTime = 6.0;
 double mixerPumpTime = 8.5;
 
@@ -276,8 +277,8 @@ void servoSetPosition(double percent) {
 /// @param up Whether the desired movement of the elevator is up or down
 /// @return True if the movement did not timeout or time wrap around did not occur, else false
 boolean elevatorMove(boolean up) {
-  unsigned long startTime = millis(); // TODO Guard against wrap around
-  int timeout = 4000; // TODO Tune Timeout
+  unsigned long startTime = millis();
+  const unsigned long timeout = 4000; // TODO Tune Timeout
   if (up) { // Move Up
     while (!digitalRead(topLimit) && (millis() - startTime) < timeout) {
       motorSetSpeed(elevatorMotorChannel, elevatorMotorPin1, elevatorMotorPin2, 1.0);
