@@ -217,7 +217,7 @@ void onDrinkSelectionChange()  {
     errorBlink(3, true);
     return;
   }
-  delay(1000);
+  delay(1500);
   
   // Move Servo to Stored Position
   servoSetPosition(0.0);
