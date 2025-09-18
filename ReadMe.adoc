@@ -4,6 +4,8 @@ An Amazon Alexa-enabled IoT device that mixes and pours drinks.
 
 Alexa treats this table as a dimmable light. A given brightness percentage represents a drink selection or a command for the table to execute.  
 
+https://github.com/user-attachments/assets/007283cb-e056-439a-94df-3cb60596aff8  
+
 == Step 1: Installation  
 
 1. Download this repository.  
