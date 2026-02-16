@@ -256,8 +256,8 @@ void servoSetPosition(double percent) {
     percent = 1.0;
   }
 
-  // Map the values 0.0-1.0 to 5-110
-  int value = 105 * percent + 5; 
+  // Map the values 0.0-1.0 to 5-120
+  int value = 115 * percent + 5;
   int prevValue = servo.read();
   servo.write(value);
 
