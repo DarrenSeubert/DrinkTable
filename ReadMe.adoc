@@ -2,7 +2,8 @@
 
 An Amazon Alexa-enabled IoT device that mixes and pours drinks.  
 
-Alexa treats this table as a dimmable light. A given brightness percentage represents a drink selection or a command for the table to execute.  
+Alexa treats this table as a dimmable light. A given brightness percentage represents a drink 
+selection or a command for the table to execute.  
 
 https://github.com/user-attachments/assets/007283cb-e056-439a-94df-3cb60596aff8  
 
@@ -48,19 +49,26 @@ DrinkTable                => Arduino sketch folder
 
 For a rough BOM for this project, refer to this https://docs.google.com/spreadsheets/d/1IcMglOSQPUuBVhDI59dvtKw1fak_Vcd6wv3FlI9-fAY/edit?usp=sharing[BOM link].  
 
-For the CAD files and 3D-printed parts used in this project, refer to the https://github.com/DarrenSeubert/DrinkTable/tree/main/CADFiles[CADFiles] folder.  
+For the CAD files and 3D-printed parts used in this project, refer to the 
+https://github.com/DarrenSeubert/DrinkTable/tree/main/CADFiles[CADFiles] folder.  
 
 === External Resources  
 
 Here are some resources that were helpful during this project:  
 
 - https://lastminuteengineers.com/esp32-pinout-reference/[ESP32 Pinout Reference]  
-- https://randomnerdtutorials.com/esp32-i2c-communication-arduino-ide/#:~:text=When%20using%20the%20ESP32%20with,to%20use%20any%20other%20pins[ESP32 I2C Communication]  
-- https://learn.sparkfun.com/tutorials/apds-9960-rgb-and-gesture-sensor-hookup-guide?_ga=2.65717033.608928880.1687222379-684264470.1685647909#hardware-hookup[APDS-9960 Sensor Guide]  
-- https://docs.arduino.cc/arduino-cloud/getting-started/cloud-variables[Arduino IoT Cloud Variables]  
+- https://randomnerdtutorials.com/esp32-i2c-communication-arduino-ide/#:~:text=When%20using%20the%20ESP32%20with,to%20use%20any%20other%20pins[ESP32 I2C Communication]
+- https://learn.sparkfun.com/tutorials/apds-9960-rgb-and-gesture-sensor-hookup-guide?_ga=2.65717033.608928880.1687222379-684264470.1685647909#hardware-hookup[APDS-9960 Sensor Guide]
+- https://docs.arduino.cc/arduino-cloud/getting-started/cloud-variables[Arduino IoT Cloud Variables]
 - https://blog.arduino.cc/2019/11/12/create-a-voice-controlled-device-with-alexa-and-arduino-iot-cloud-in-7-minutes/[Alexa and Arduino IoT Cloud Integration]  
 
 Videos:  
 
 - https://www.youtube.com/watch?v=F9UASFoUwiQ[Can Alexa/Siri Be Your Bartender?]
 - https://www.youtube.com/watch?v=nR24z26chBI[I Need To Stop Making Smart Furniture]  
+
+=== Disclaimers  
+- DO NOT keep liquids that need to be refrigerated or closed inside the table after opening for an 
+extended period of time. This could lead to bacteria and mold growth.
+- The current setup tends to leave a plastic-like taste in the liquids poured. I was unable to 
+identify a root cause for this issue, and I am uncertain about how serious the concern may be.
