@@ -14,7 +14,7 @@ const int red = 13;
 const int green = 12;
 const int blue = 14;
 const int pump1 = 26; // Apple Brandy
-const int pump2 = 25; // Cran-Grape Juice
+const int pump2 = 25; // Punch
 const int pump3 = 33; // UV Blue
 const int pump4 = 32; // Lemonade
 
@@ -449,10 +449,10 @@ void setColor(RGBColor color) {
 
 /// @brief Function that given the drink code will set the pump times and LED color
 /// @param drinkCode The numeric code of the drink
-/// @param pump1Time The time to be set for pump1
-/// @param pump2Time The time to be set for pump2
-/// @param pump3Time The time to be set for pump3
-/// @param pump4Time The time to be set for pump4
+/// @param pump1Time The run time to be set for pump1
+/// @param pump2Time The run time to be set for pump2
+/// @param pump3Time The run time to be set for pump3
+/// @param pump4Time The run time to be set for pump4
 /// @return True if a valid drink's pump times were calculated, else false 
 boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double &pump3Time,
                      double &pump4Time) {
@@ -461,15 +461,15 @@ boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double
   switch (drinkCode) {
     case 1: // Apple Brandy Straight
       pump1Time = shotPumpTime; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Green);
       validDrink = true;
       break;
-    case 2: // Apple Brandy Straight Tall
+    case 2: // Large Apple Brandy Straight
       pump1Time = shotPumpTime * 2; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Green);
@@ -477,31 +477,31 @@ boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double
       break;
     case 3: // UV Blue Straight
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = shotPumpTime; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Blue);
       validDrink = true;
       break;
-    case 4: // UV Blue Straight Tall
+    case 4: // Large UV Blue Straight
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = shotPumpTime * 2; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Blue);
       validDrink = true;
       break;
-    case 5: // UV Blue Cran-Grape
+    case 5: // UV Blue Punch
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = mixerPumpTime; // Cran-Grape
+      pump2Time = mixerPumpTime; // Punch
       pump3Time = shotPumpTime; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Purple);
       validDrink = true;
       break;
-    case 6: // UV Blue Cran-Grape Tall
+    case 6: // Large UV Blue Punch
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = mixerPumpTime; // Cran-Grape
+      pump2Time = mixerPumpTime; // Punch
       pump3Time = shotPumpTime * 2; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Purple);
@@ -509,31 +509,31 @@ boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double
       break;
     case 7: // UV Blue Lemonade
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = shotPumpTime; // UV Blue
       pump4Time = mixerPumpTime; // Lemonade
       setColor(Cyan);
       validDrink = true;
       break;
-    case 8: // UV Blue Lemonade Tall
+    case 8: // Large UV Blue Lemonade
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
-      pump3Time = shotPumpTime; // UV Blue
-      pump4Time = mixerPumpTime * 2; // Lemonade
+      pump2Time = 0.0; // Punch
+      pump3Time = shotPumpTime * 2; // UV Blue
+      pump4Time = mixerPumpTime ; // Lemonade
       setColor(Cyan);
       validDrink = true;
       break;
-    case 9: // Cran-Grape
+    case 9: // Punch
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = mixerPumpTime; // Cran-Grape
+      pump2Time = mixerPumpTime; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Red);
       validDrink = true;
       break;
-    case 10: // Cran-Grape Tall
+    case 10: // Large Punch
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = mixerPumpTime * 2; // Cran-Grape
+      pump2Time = mixerPumpTime * 2; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Red);
@@ -541,15 +541,15 @@ boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double
       break;
     case 11: // Lemonade
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = mixerPumpTime; // Lemonade
       setColor(Yellow);
       validDrink = true;
       break;
-    case 12: // Lemonade Tall
+    case 12: // Large Lemonade
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = mixerPumpTime * 2; // Lemonade
       setColor(Yellow);
@@ -557,7 +557,7 @@ boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double
       break;
     default:
       pump1Time = 0.0; // Apple Brandy
-      pump2Time = 0.0; // Cran-Grape
+      pump2Time = 0.0; // Punch
       pump3Time = 0.0; // UV Blue
       pump4Time = 0.0; // Lemonade
       setColor(Black);
