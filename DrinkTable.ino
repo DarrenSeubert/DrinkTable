@@ -13,6 +13,7 @@ enum RGBColor {
 const int red = 13;
 const int green = 12;
 const int blue = 14;
+
 const int pump1 = 26; // Apple Brandy
 const int pump2 = 25; // Punch
 const int pump3 = 33; // UV Blue
@@ -37,25 +38,30 @@ SparkFun_APDS9960 prox = SparkFun_APDS9960();
 const int proxPower = 19;
 const int proxGround = 18;
 
-boolean firstRun;
+boolean firstRun = true;
 
 boolean errorState = false;
 int errorBlinkCode = 0;
 
 boolean recentPour = false;
 
-double shotPumpTime = 6.0;
-double mixerPumpTime = 8.5;
+const double shotPumpTime = 6.0;
+const double mixerPumpTime = 8.5;
 
 /// @brief Function called once on boot of program
 void setup() {
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
+
   pinMode(pump1, OUTPUT);
   pinMode(pump2, OUTPUT);
   pinMode(pump3, OUTPUT);
   pinMode(pump4, OUTPUT);
+  digitalWrite(pump1, LOW);
+  digitalWrite(pump2, LOW);
+  digitalWrite(pump3, LOW);
+  digitalWrite(pump4, LOW);
 
   pinMode(elevatorMotorPin1, OUTPUT);
   pinMode(elevatorMotorPin2, OUTPUT);
@@ -184,7 +190,7 @@ void onDrinkSelectionChange()  {
   }
 
   // Detects a Non-Valid Drink is Selected
-  double pump1Time, pump2Time, pump3Time, pump4Time = 0.0;
+  double pump1Time = 0.0, pump2Time = 0.0, pump3Time = 0.0, pump4Time = 0.0;
   if (!getPumpTimes(tableCode, pump1Time, pump2Time, pump3Time, pump4Time)) {
     Serial.println("Error: Invalid Drink Selection");
     errorBlink(3, false);
@@ -343,6 +349,7 @@ boolean pumpLiquid(double pump1Time, double pump2Time, double pump3Time, double 
     digitalWrite(pump4, elapsedTime < pump4Dur ? HIGH : LOW);
 
     recentPour = true;
+    delay(1);
   }
 
   digitalWrite(pump1, LOW);
@@ -519,7 +526,7 @@ boolean getPumpTimes(int drinkCode, double &pump1Time, double &pump2Time, double
       pump1Time = 0.0; // Apple Brandy
       pump2Time = 0.0; // Punch
       pump3Time = shotPumpTime * 2; // UV Blue
-      pump4Time = mixerPumpTime ; // Lemonade
+      pump4Time = mixerPumpTime; // Lemonade
       setColor(Cyan);
       validDrink = true;
       break;
