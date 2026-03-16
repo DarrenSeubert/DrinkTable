@@ -5,7 +5,7 @@ An Amazon Alexa-enabled IoT device that mixes and pours drinks.
 Alexa treats this table as a dimmable light. A given brightness percentage represents a drink 
 selection or a command for the table to execute.  
 
-https://github.com/user-attachments/assets/007283cb-e056-439a-94df-3cb60596aff8  
+https://github.com/user-attachments/assets/83653fed-f806-43cc-ba11-e9e344582d79  
 
 == Step 1: Installation  
 
@@ -68,7 +68,7 @@ Videos:
 - https://www.youtube.com/watch?v=nR24z26chBI[I Need To Stop Making Smart Furniture]  
 
 === Disclaimers  
-- DO NOT keep liquids that need to be refrigerated or closed inside the table after opening for an 
-extended period of time. This could lead to bacteria and mold growth.
+- DO NOT keep liquids that need to be refrigerated or closed inside of the table after opening for 
+an extended period of time. This could lead to bacteria and mold growth.
 - The current setup tends to leave a plastic-like taste in the liquids poured. I was unable to 
 identify a root cause for this issue, and I am uncertain about how serious the concern may be.
